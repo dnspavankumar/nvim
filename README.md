@@ -16,7 +16,7 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 - Ribbon-style statusline (powerline separators, auto adapts to current colorscheme)
 - CompetiTest helper in right sidebar split layout
 - Autocomplete, Treesitter, and LSP support
-- Installed themes: `tokyonight-night` (default) and `gruvbox`
+- Installed themes: `vesper` (default) and `gruvbox`
 
 ## Requirements
 
@@ -30,6 +30,28 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 1. Open Neovim
 2. Run `:Lazy sync`
 3. Restart Neovim
+
+## Quick Start (Your Exact Workflow)
+
+Use this flow each time you solve a Codeforces/online judge problem.
+
+1. Open terminal in your solutions folder:
+   - PowerShell:
+     - `cd $HOME\codeforces`
+     - `nvim`
+2. In Chrome, open a problem on Codeforces (or another judge).
+3. Click the Competitive Companion extension icon.
+4. Switch to Neovim:
+   - It will prompt how to save the received problem.
+   - Choose `P` (Problem) to create a single problem file.
+5. The file is created automatically (for example: `$HOME/codeforces/<PROBLEM>.cpp`).
+6. Write your solution.
+7. Run tests:
+   - Preferred: `Alt+N`
+   - Fallbacks: `Ctrl+Alt+N` or `F5`
+8. If tests pass, copy code and submit:
+   - For full file copy: `Ctrl+A` then `Ctrl+C`
+   - Paste in Codeforces and submit.
 
 ## Leader Key
 
@@ -95,11 +117,14 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 
 ## Competitive Companion Flow
 
-1. Open a problem in browser
-2. Click Competitive Companion extension
-3. In Neovim, run with `Ctrl+Alt+N` (or `F5` fallback)
-4. Open/reopen UI with `Ctrl+Alt+U`
+1. Open a problem in browser.
+2. Click Competitive Companion extension icon.
+3. In Neovim, choose `P` when prompted to create the problem file.
+4. Write your code in the created `.cpp` file.
+5. Run tests with `Alt+N` (`Ctrl+Alt+N` / `F5` fallback).
+6. Open/reopen test UI with `Ctrl+Alt+U` (`<leader>cu` fallback).
 
 ## Notes
 
 - Some terminals do not forward `Ctrl+Alt` combos correctly. Use provided fallbacks (`Alt+N`, `F5`, `<leader>cu`, `<leader>bn`, `<leader>bp`) if needed.
+- If problem receiving does not trigger from browser, run `<leader>cp` in Neovim to receive problem manually.

@@ -44,7 +44,9 @@ return {
         maximum_time = 5000,
         output_compare_method = "squish",
 
-        view_mode = "split",
+        runner_ui = {
+          interface = "split",
+        },
         split_ui = {
           position = "right",
           relative_to_editor = true,

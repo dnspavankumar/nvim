@@ -1,6 +1,6 @@
 return {
   {
-    "folke/tokyonight.nvim",
+    "projekt0n/github-nvim-theme",
     lazy = false,
     priority = 1000,
     config = function()
@@ -17,8 +17,27 @@ return {
         local normal = get_hl("Normal")
         local tree_normal = get_hl("NvimTreeNormal")
 
+        local function shift_rgb(color, delta)
+          if type(color) ~= "number" then
+            return nil
+          end
+
+          local r = math.floor(color / 0x10000)
+          local g = math.floor((color % 0x10000) / 0x100)
+          local b = color % 0x100
+
+          r = math.min(255, math.max(0, r + delta))
+          g = math.min(255, math.max(0, g + delta))
+          b = math.min(255, math.max(0, b + delta))
+
+          return (r * 0x10000) + (g * 0x100) + b
+        end
+
         local normal_bg = normal.bg
-        local tree_bg = tree_normal.bg or normal_bg
+        local normal_fg = normal.fg or 0xC9D1D9
+        local tree_bg = shift_rgb(tree_normal.bg or normal_bg, -10) or 0x202938
+        local status_bg = shift_rgb(normal_bg, 10) or 0x303A4A
+        local status_nc_bg = shift_rgb(normal_bg, 5) or 0x2A3342
         local eob_fg = comment.fg or 0x5B6078
 
         vim.api.nvim_set_hl(0, "EndOfBuffer", {
@@ -38,12 +57,36 @@ return {
           bg = tree_bg,
         })
         vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", {
-          fg = tree_bg,
+          fg = 0xFFFFFF,
           bg = tree_bg,
         })
+        vim.api.nvim_set_hl(0, "WinSeparator", {
+          fg = 0xFFFFFF,
+          bg = normal_bg,
+        })
+
+        vim.api.nvim_set_hl(0, "StatusLine", {
+          fg = normal_fg,
+          bg = status_bg,
+        })
+        vim.api.nvim_set_hl(0, "StatusLineNC", {
+          fg = eob_fg,
+          bg = status_nc_bg,
+        })
+
+        for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
+          for _, section in ipairs({ "b", "c", "x", "y" }) do
+            local group = "lualine_" .. section .. "_" .. mode
+            local existing = get_hl(group)
+            vim.api.nvim_set_hl(0, group, {
+              fg = existing.fg or normal_fg,
+              bg = mode == "inactive" and status_nc_bg or status_bg,
+            })
+          end
+        end
       end
 
-      vim.cmd.colorscheme("tokyonight-night")
+      vim.cmd.colorscheme("github_dark")
       set_eob_highlight()
 
       vim.api.nvim_create_autocmd("ColorScheme", {
@@ -116,7 +159,14 @@ return {
     version = "*",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
+      local ok_vesper, vesper = pcall(require, "vesper")
+      local highlights = nil
+      if ok_vesper and vesper.bufferline then
+        highlights = vesper.bufferline.highlights
+      end
+
       require("bufferline").setup({
+        highlights = highlights,
         options = {
           mode = "buffers",
           separator_style = "slant",
