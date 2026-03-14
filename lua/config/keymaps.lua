@@ -13,6 +13,18 @@ local function open_competitest_ui()
   end
 end
 
+local function buffer_next()
+  vim.cmd("BufferLineCycleNext")
+end
+
+local function buffer_prev()
+  vim.cmd("BufferLineCyclePrev")
+end
+
+local function buffer_close()
+  vim.cmd("bdelete")
+end
+
 -- VS Code-like editing shortcuts
 map("n", "<C-c>", '"+yy', vim.tbl_extend("force", opts, { desc = "Copy line" }))
 map("x", "<C-c>", '"+y', vim.tbl_extend("force", opts, { desc = "Copy selection" }))
@@ -42,6 +54,33 @@ map("n", "<C-`>", "<cmd>ToggleTerm direction=float<CR>", vim.tbl_extend("force",
 map("i", "<C-`>", "<Esc><cmd>ToggleTerm direction=float<CR>", vim.tbl_extend("force", opts, { desc = "Toggle terminal" }))
 map("t", "<C-`>", "<C-\\><C-n><cmd>ToggleTerm direction=float<CR>", vim.tbl_extend("force", opts, { desc = "Toggle terminal" }))
 map("n", "<leader>t", "<cmd>ToggleTerm direction=float<CR>", vim.tbl_extend("force", opts, { desc = "Toggle terminal fallback" }))
+
+-- File tabs / buffers
+map("n", "<C-Tab>", buffer_next, vim.tbl_extend("force", opts, { desc = "Next file tab" }))
+map("n", "<C-S-Tab>", buffer_prev, vim.tbl_extend("force", opts, { desc = "Previous file tab" }))
+map("i", "<C-Tab>", function()
+  vim.cmd("stopinsert")
+  buffer_next()
+end, vim.tbl_extend("force", opts, { desc = "Next file tab" }))
+map("i", "<C-S-Tab>", function()
+  vim.cmd("stopinsert")
+  buffer_prev()
+end, vim.tbl_extend("force", opts, { desc = "Previous file tab" }))
+map("t", "<C-Tab>", function()
+  local esc_term = vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true)
+  vim.api.nvim_feedkeys(esc_term, "n", false)
+  buffer_next()
+end, vim.tbl_extend("force", opts, { desc = "Next file tab" }))
+map("t", "<C-S-Tab>", function()
+  local esc_term = vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true)
+  vim.api.nvim_feedkeys(esc_term, "n", false)
+  buffer_prev()
+end, vim.tbl_extend("force", opts, { desc = "Previous file tab" }))
+map("n", "<A-Right>", buffer_next, vim.tbl_extend("force", opts, { desc = "Next file tab fallback" }))
+map("n", "<A-Left>", buffer_prev, vim.tbl_extend("force", opts, { desc = "Previous file tab fallback" }))
+map("n", "<leader>bn", buffer_next, vim.tbl_extend("force", opts, { desc = "Next file tab fallback" }))
+map("n", "<leader>bp", buffer_prev, vim.tbl_extend("force", opts, { desc = "Previous file tab fallback" }))
+map("n", "<leader>bd", buffer_close, vim.tbl_extend("force", opts, { desc = "Close current file tab" }))
 
 map("n", "<C-A-n>", run_competitest, vim.tbl_extend("force", opts, { desc = "Run received testcases" }))
 map("n", "<C-M-n>", run_competitest, vim.tbl_extend("force", opts, { desc = "Run received testcases" }))

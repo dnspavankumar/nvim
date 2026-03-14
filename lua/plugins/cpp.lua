@@ -27,7 +27,11 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      "L3MON4D3/LuaSnip",
+      {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        submodules = false,
+      },
       "saadparwaiz1/cmp_luasnip",
     },
     config = function()
@@ -95,7 +99,7 @@ return {
         capabilities = cmp_lsp.default_capabilities(capabilities)
       end
 
-      local on_attach = function(_, bufnr)
+      local on_attach = function(client, bufnr)
         local map = function(lhs, rhs, desc)
           vim.keymap.set("n", lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
         end
@@ -108,6 +112,11 @@ return {
         map("<leader>cf", function()
           vim.lsp.buf.format({ async = true })
         end, "Format file")
+
+        local ok_navic, navic = pcall(require, "nvim-navic")
+        if ok_navic and client.server_capabilities and client.server_capabilities.documentSymbolProvider then
+          navic.attach(client, bufnr)
+        end
       end
 
       local clangd_config = {

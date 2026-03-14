@@ -27,6 +27,7 @@ opt.completeopt = { "menu", "menuone", "noselect" }
 opt.swapfile = false
 opt.backup = false
 opt.undofile = true
+opt.fillchars:append({ eob = "~" })
 
 vim.filetype.add({
   extension = {
