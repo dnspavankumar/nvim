@@ -53,6 +53,12 @@ return {
     end,
   },
   {
+    "ellisonleao/gruvbox.nvim",
+    lazy = false,
+    priority = 999,
+    opts = {},
+  },
+  {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
   },
