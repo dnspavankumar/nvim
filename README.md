@@ -13,6 +13,8 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 - Editor scrollbar (`nvim-scrollbar`)
 - Indentation scope matching/highlighting (`indent-blankline`)
 - Visible `~` markers after end of file lines
+- Ribbon-style statusline (powerline separators, auto adapts to current colorscheme)
+- CompetiTest helper in right sidebar split layout
 - Autocomplete, Treesitter, and LSP support
 
 ## Requirements

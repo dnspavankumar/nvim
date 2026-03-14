@@ -48,11 +48,11 @@ return {
         split_ui = {
           position = "right",
           relative_to_editor = true,
-          total_width = 0.42,
+          total_width = 0.30,
           vertical_layout = {
-            { 1, "tc" },
-            { 1, { { 1, "so" }, { 1, "eo" } } },
-            { 1, { { 1, "si" }, { 1, "se" } } },
+            { 2, "tc" },
+            { 2, { { 1, "si" }, { 1, "se" } } },
+            { 2, { { 1, "so" }, { 1, "eo" } } },
           },
         },
         floating_border = "rounded",
