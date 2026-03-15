@@ -122,7 +122,7 @@ It is highly recommended to learn vim-motions. It will help you experience the r
 | Go to implementation | `gi` | Normal |
 | Find references | `gr` | Normal |
 | Hover docs | `K` | Normal |
-| Format file | `<leader>cf` | Normal |
+| Format file | `<leader>lf` | Normal |
 
 To check all keymaps, do `<leader>?`.
 
