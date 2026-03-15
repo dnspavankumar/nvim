@@ -47,7 +47,7 @@ Use this flow each time you solve a Codeforces/online judge problem.
 4. Switch to Neovim:
    - It will prompt how to save the received problem.
    - Choose `P` (Problem) to create a single problem file.
-5. The file is created automatically (for example: `$HOME/codeforces/<PROBLEM>.cpp`).
+5. The file is created automatically (for example: `$HOME/codeforces/<contest>/<index>.cpp`).
 6. Write your solution.
 7. Run tests:
    - Preferred: `Alt+N`
@@ -108,6 +108,7 @@ Use this flow each time you solve a Codeforces/online judge problem.
 | Delete testcase | `<leader>cd` | Normal |
 | Edit persistent C++ template | `:Template` / `:template` | Command |
 | Manual submit command | `:CFSubmit` | Command |
+| Login for submit CLI | `:CFLogin` | Command |
 
 ### LSP Navigation (when `clangd` is installed)
 
@@ -134,7 +135,11 @@ Use this flow each time you solve a Codeforces/online judge problem.
 
 - `F5` uses `cf` CLI if available (`cf submit <contest> <problem> <file>`).
 - If `cf` is not available, it tries `oj` (`oj submit -y <url> <file>`).
-- If neither exists, set your own command template in Lua:
+- If `oj` is not in PATH, it automatically falls back to `python -m onlinejudge_command.main submit -y <url> <file>`.
+- First-time setup (one time): run `:CFLogin` and complete login in the terminal.
+- Contest ID and problem index are auto-detected from Competitive Companion URL and saved in path format: `$HOME/codeforces/<contest>/<index>.cpp`.
+- `F5` can also parse Codeforces URLs found in your source comments for older files.
+- If you want a custom submit command, set it in Lua:
   - `vim.g.codeforces_submit_command = "your-command {contest} {problem} {file} {url}"`
 
 ## Notes

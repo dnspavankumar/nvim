@@ -5,6 +5,39 @@ return {
       "MunifTanjim/nui.nvim",
     },
     config = function()
+      local uv = vim.uv or vim.loop
+
+      local function sanitize_segment(str, fallback)
+        local value = (str or ""):gsub('[<>:"/\\|?*]', "_")
+        if value == "" then
+          return fallback or "unknown"
+        end
+        return value
+      end
+
+      local function parse_cf_url(url)
+        if type(url) ~= "string" then
+          return nil, nil
+        end
+
+        local contest, index = url:match("codeforces%.com/contest/(%d+)/problem/([A-Za-z][A-Za-z0-9]*)")
+        if contest and index then
+          return contest, index:upper()
+        end
+
+        contest, index = url:match("codeforces%.com/problemset/problem/(%d+)/([A-Za-z][A-Za-z0-9]*)")
+        if contest and index then
+          return contest, index:upper()
+        end
+
+        contest, index = url:match("codeforces%.com/gym/(%d+)/problem/([A-Za-z][A-Za-z0-9]*)")
+        if contest and index then
+          return contest, index:upper()
+        end
+
+        return nil, nil
+      end
+
       require("competitest").setup({
         local_config_file_name = ".competitest.lua",
         companion_port = 27121,
@@ -60,11 +93,33 @@ return {
         floating_border = "rounded",
 
         received_files_extension = "cpp",
-        received_problems_path = "$(HOME)/codeforces/$(PROBLEM).$(FEXT)",
-        received_problems_prompt_path = true,
-        received_contests_directory = "$(HOME)/codeforces/$(CONTEST)",
-        received_contests_problems_path = "$(PROBLEM).$(FEXT)",
-        received_contests_prompt_directory = true,
+        received_problems_path = function(task, file_extension)
+          local home = uv.os_homedir()
+          local contest, index = parse_cf_url(task.url)
+          if contest and index then
+            return string.format("%s/codeforces/%s/%s.%s", home, contest, index, file_extension)
+          end
+          local problem = sanitize_segment(task.name, "problem")
+          return string.format("%s/codeforces/%s.%s", home, problem, file_extension)
+        end,
+        received_problems_prompt_path = false,
+        received_contests_directory = function(task, _)
+          local home = uv.os_homedir()
+          local contest = select(1, parse_cf_url(task.url))
+          if contest then
+            return string.format("%s/codeforces/%s", home, contest)
+          end
+          return string.format("%s/codeforces/%s", home, sanitize_segment(task.group, "contest"))
+        end,
+        received_contests_problems_path = function(task, file_extension)
+          local _, index = parse_cf_url(task.url)
+          if index then
+            return string.format("%s.%s", index, file_extension)
+          end
+          local problem = sanitize_segment(task.name, "problem")
+          return string.format("%s.%s", problem, file_extension)
+        end,
+        received_contests_prompt_directory = false,
         received_contests_prompt_extension = true,
         open_received_problems = true,
         open_received_contests = true,

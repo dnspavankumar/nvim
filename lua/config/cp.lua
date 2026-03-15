@@ -77,8 +77,36 @@ local function parse_from_filename(filepath)
     return contest, problem:upper()
   end
 
+  problem = stem:match("^([A-Za-z][A-Za-z0-9]*)[%._%-%s]")
+  if problem then
+    return nil, problem:upper()
+  end
+
   if stem:match("^[A-Za-z][A-Za-z0-9]*$") then
     return nil, stem:upper()
+  end
+
+  return nil, nil
+end
+
+local function parse_codeforces_from_url(url)
+  if type(url) ~= "string" then
+    return nil, nil
+  end
+
+  local contest, problem = url:match("codeforces%.com/contest/(%d+)/problem/([A-Za-z][A-Za-z0-9]*)")
+  if contest and problem then
+    return contest, problem:upper()
+  end
+
+  contest, problem = url:match("codeforces%.com/problemset/problem/(%d+)/([A-Za-z][A-Za-z0-9]*)")
+  if contest and problem then
+    return contest, problem:upper()
+  end
+
+  contest, problem = url:match("codeforces%.com/gym/(%d+)/problem/([A-Za-z][A-Za-z0-9]*)")
+  if contest and problem then
+    return contest, problem:upper()
   end
 
   return nil, nil
@@ -96,9 +124,42 @@ local function sanitize_input(value)
   return (value or ""):gsub("%s+", "")
 end
 
+local function read_lines_head(filepath, max_lines)
+  local current = normalize_path(vim.api.nvim_buf_get_name(0))
+  if current == normalize_path(filepath) then
+    local count = math.min(max_lines, vim.api.nvim_buf_line_count(0))
+    return vim.api.nvim_buf_get_lines(0, 0, count, false)
+  end
+
+  local ok, lines = pcall(vim.fn.readfile, filepath, "", max_lines)
+  if ok then
+    return lines
+  end
+  return {}
+end
+
+local function parse_from_source_url(filepath)
+  local lines = read_lines_head(filepath, 80)
+  for _, line in ipairs(lines) do
+    local url = line:match("https?://%S+")
+    if url and url:find("codeforces%.com") then
+      url = url:gsub("[%)%]}>\"'%,%.]+$", "")
+      local contest, problem = parse_codeforces_from_url(url)
+      if contest and problem then
+        return contest, problem
+      end
+    end
+  end
+  return nil, nil
+end
+
 local function resolve_problem_context(filepath)
   local contest, problem = parse_from_filename(filepath)
   contest = contest or parse_contest_from_parent(filepath)
+
+  local url_contest, url_problem = parse_from_source_url(filepath)
+  contest = contest or url_contest
+  problem = problem or url_problem
 
   if not contest then
     contest = sanitize_input(vim.fn.input("Codeforces contest ID: "))
@@ -153,6 +214,34 @@ local function build_submit_command(filepath, contest, problem)
     return string.format("oj submit -y %s %s", replacements.url, replacements.file)
   end
 
+  if vim.fn.executable("python") == 1 then
+    return string.format("python -m onlinejudge_command.main submit -y %s %s", replacements.url, replacements.file)
+  end
+
+  if vim.fn.executable("py") == 1 then
+    return string.format("py -m onlinejudge_command.main submit -y %s %s", replacements.url, replacements.file)
+  end
+
+  return nil
+end
+
+local function build_login_command()
+  if vim.fn.executable("cf") == 1 then
+    return "cf login"
+  end
+
+  if vim.fn.executable("oj") == 1 then
+    return "oj login https://codeforces.com/"
+  end
+
+  if vim.fn.executable("python") == 1 then
+    return "python -m onlinejudge_command.main login https://codeforces.com/"
+  end
+
+  if vim.fn.executable("py") == 1 then
+    return "py -m onlinejudge_command.main login https://codeforces.com/"
+  end
+
   return nil
 end
 
@@ -192,13 +281,27 @@ function M.submit_current_file()
   local command = build_submit_command(filepath, contest, problem)
   if not command then
     vim.notify(
-      "No submit CLI found. Install 'cf' or 'oj', or set vim.g.codeforces_submit_command.",
+      "No submit command found. Install 'cf' or 'online-judge-tools', or set vim.g.codeforces_submit_command.",
       vim.log.levels.ERROR
     )
     return
   end
 
   vim.notify(string.format("Submitting %s (%s%s)...", vim.fn.fnamemodify(filepath, ":t"), contest, problem))
+  open_terminal_with_command(command)
+end
+
+function M.login_codeforces()
+  local command = build_login_command()
+  if not command then
+    vim.notify(
+      "No login command found. Install 'cf' or 'online-judge-tools'.",
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
+  vim.notify("Opening Codeforces login flow in terminal...")
   open_terminal_with_command(command)
 end
 
@@ -215,6 +318,12 @@ function M.setup()
     vim.api.nvim_create_user_command("CFSubmit", function()
       M.submit_current_file()
     end, { desc = "Submit current C++ file to Codeforces" })
+  end
+
+  if vim.fn.exists(":CFLogin") == 0 then
+    vim.api.nvim_create_user_command("CFLogin", function()
+      M.login_codeforces()
+    end, { desc = "Login for Codeforces submit CLI" })
   end
 
   pcall(vim.cmd, "cunabbrev template")
