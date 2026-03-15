@@ -130,9 +130,29 @@ return {
           lualine_a = {
             { "mode", separator = { left = "", right = "" }, right_padding = 2 },
           },
-          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_b = {
+            "branch",
+            "diff",
+            {
+              'diagnostics',
+              symbols = {
+                error = ' ',
+                warn  = ' ',
+                info  = ' ',
+                hint  = ' ',
+              },
+            },
+
+          },
           lualine_c = {
-            { "filename", path = 1, symbols = { modified = " ●", readonly = " ", unnamed = "[No Name]" } },
+            {
+              "filename",
+              path = 1,
+              symbols = {
+                modified = " ●",
+                readonly = " ",
+              }
+            },
           },
           lualine_x = { "encoding", "fileformat", "filetype" },
           lualine_y = { "progress" },
