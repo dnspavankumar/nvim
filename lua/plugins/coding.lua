@@ -20,6 +20,7 @@ return {
       })
     end,
   },
+
   {
     "saghen/blink.cmp",
     version = "*",
@@ -40,6 +41,7 @@ return {
       },
     },
   },
+
   {
     "echasnovski/mini.ai",
     version = "*",
@@ -47,6 +49,7 @@ return {
       require("mini.ai").setup()
     end,
   },
+
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
@@ -54,9 +57,34 @@ return {
       require("nvim-autopairs").setup({})
     end,
   },
+
   {
     "numToStr/Comment.nvim",
     event = "VeryLazy",
     opts = {},
+  },
+
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons",
+    },
+
+    config = function()
+      require("barbecue").setup({
+        attach_navic = false,
+        create_autocmd = true,
+        show_dirname = true,
+        show_basename = true,
+        show_navic = true,
+        show_modified = true,
+        symbols = {
+          separator = " > ",
+        },
+      })
+    end,
   },
 }
