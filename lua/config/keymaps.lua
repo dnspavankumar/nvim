@@ -25,7 +25,45 @@ map("n", "<C-z>", "u", vim.tbl_extend("force", opts, { desc = "Undo" }))
 map("i", "<C-z>", "<esc>u", vim.tbl_extend("force", opts, { desc = "Undo" }))
 map("n", "<C-y>", "<C-r>", vim.tbl_extend("force", opts, { desc = "Redo" }))
 map("i", "<C-y>", "<esc><C-r>", vim.tbl_extend("force", opts, { desc = "Redo" }))
-map("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
+
+-- Clear search highlight
+map({ 'n', 's' }, '<esc>', function()
+  vim.cmd 'noh'
+  return '<esc>'
+end, { expr = true, desc = 'Escape and clear hlsearch' })
+
+-- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+map('n', 'n', "'Nn'[v:searchforward].'zv'", { expr = true, desc = 'Next search result', silent = true })
+map('x', 'n', "'Nn'[v:searchforward]", { expr = true, desc = 'Next search result', silent = true })
+map('o', 'n', "'Nn'[v:searchforward]", { expr = true, desc = 'Next search result', silent = true })
+map('n', 'N', "'nN'[v:searchforward].'zv'", { expr = true, desc = 'Prev search result', silent = true })
+map('x', 'N', "'nN'[v:searchforward]", { expr = true, desc = 'Prev search result', silent = true })
+map('o', 'N', "'nN'[v:searchforward]", { expr = true, desc = 'Prev search result', silent = true })
+
+-- Add undo break-points
+map('i', ',', ',<c-g>u')
+map('i', '.', '.<c-g>u')
+map('i', ';', ';<c-g>u')
+
+-- better indenting
+map('v', '<', '<gv')
+map('v', '>', '>gv')
+
+-- wrap
+map('n', '<leader>uw', function()
+  vim.o.wrap = not vim.o.wrap
+end, { desc = "Toggle wrap", silent = true })
+
+-- highlights under cursor
+map('n', '<leader>ui', vim.show_pos, { desc = 'Inspect pos', silent = true })
+map('n', '<leader>uI', function()
+  vim.treesitter.inspect_tree()
+  vim.api.nvim_input 'I'
+end, { desc = 'Inspect tree' })
+
+-- windows
+map('n', '<leader>-', '<c-w>s', { desc = 'Split window below', remap = true, silent = true })
+map('n', '<leader>|', '<c-w>v', { desc = 'Split window right', remap = true, silent = true })
 
 -- Lazy
 map("n", "<leader>L", ":Lazy<cr>", { desc = "Lazy" })
