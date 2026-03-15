@@ -229,7 +229,7 @@ return {
         width_preview = 30,
       },
       options = {
-        use_as_default_explorer = false,
+        use_as_default_explorer = true,
       },
     },
     keys = {
@@ -354,17 +354,11 @@ return {
       },
     },
     keys = {
-      { "<leader>bn", "<cmd>BufferLineCycleNext<cr>", mode = "n", noremap = true, silent = true, desc = "Next buffer" },
-      { "<leader>bp", "<cmd>BufferLineCyclePrev<cr>", mode = "n", noremap = true, silent = true, desc = "Previous buffer" },
-      { "<leader>bd", "<cmd>BufferLinePickClose<cr>", mode = "n", noremap = true, silent = true, desc = "Close current buffer" },
-      {
-        "<C-Tab>",
-        "<cmd>BufferLineCycleNext<cr>",
-        mode = "n",
-        noremap = true,
-        silent = true,
-        desc = "Next buffer fallback"
-      },
+      { "<leader>bn", "<cmd>BufferLineCycleNext<cr>", noremap = true, silent = true, desc = "Next buffer" },
+      { "<leader>bp", "<cmd>BufferLineCyclePrev<cr>", noremap = true, silent = true, desc = "Previous buffer" },
+      { "<leader>bd", "<cmd>BufferLinePickClose<cr>", noremap = true, silent = true, desc = "Close current buffer" },
+      { "<C-Tab>",    "<cmd>BufferLineCycleNext<cr>", noremap = true, silent = true, desc = "Next buffer fallback" },
+      { "<C-S-Tab>",  "<cmd>BufferLineCyclePrev<cr>", noremap = true, silent = true, desc = "Previous buffer fallback" },
       {
         "<C-Tab>",
         function()
@@ -387,14 +381,6 @@ return {
         noremap = true,
         silent = true,
         desc = "Next buffer fallback"
-      },
-      {
-        "<C-S-Tab>",
-        "<cmd>BufferLineCyclePrev<cr>",
-        mode = "n",
-        noremap = true,
-        silent = true,
-        desc = "Previous buffer fallback"
       },
       {
         "<C-S-Tab>",
