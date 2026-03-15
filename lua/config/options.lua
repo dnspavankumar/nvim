@@ -3,6 +3,7 @@ vim.g.maplocalleader = " "
 
 local opt = vim.opt
 
+opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus'
 opt.number = true
 opt.relativenumber = true
 opt.mouse = "a"
