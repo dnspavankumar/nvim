@@ -159,6 +159,36 @@ return {
         }
       },
     },
+
+    ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
+    config = function(_, opts)
+      -- snippets
+      local langs = {
+        'c',
+        'cpp',
+      }
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = langs,
+        callback = function(args)
+          local ls = require 'luasnip'
+          _G.lang_done = _G.lang_done or {}
+
+          for _, lang in ipairs(langs) do
+            if args.match == lang and not _G.lang_done[lang] then
+              local ok, file = pcall(require, 'snippets.' .. lang)
+              if ok then
+                ls.add_snippets(lang, require('snippets.' .. lang))
+                _G.lang_done[lang] = true
+                break
+              end
+            end
+          end
+        end,
+      })
+
+      opts.sources.compat = nil
+      require 'blink.cmp'.setup(opts)
+    end
   },
 
   {
