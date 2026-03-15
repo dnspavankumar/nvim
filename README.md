@@ -88,11 +88,11 @@ It is highly recommended to learn vim-motions. It will help you experience the r
 
 | Action | Keys | Mode |
 |---|---|---|
-| Fuzzy-find files | `<leader>ff` | Normal/Insert/Terminal |
+| Fuzzy-find files | `<leader>ff` | Normal |
 | Next buffer | `<leader>bn` | Normal |
-| Next buffer fallback | `Ctrl+Tab` | Normal |
+| Next buffer fallback | `Ctrl+Tab` | Normal/Insert |
 | Previous buffer | `<leader>bp` | Normal |
-| Previous buffer fallback | `Ctrl+Shift+Tab` | Normal |
+| Previous buffer fallback | `Ctrl+Shift+Tab` | Normal/Insert |
 | Close current buffer | `<leader>bd` | Normal |
 
 ### Competitive Programming (CompetiTest)
