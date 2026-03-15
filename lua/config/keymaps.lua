@@ -1,5 +1,6 @@
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
+local cp = require("config.cp")
 
 local function run_competitest()
   vim.cmd("CompetiTest run")
@@ -94,7 +95,7 @@ map("t", "<C-A-n>", function()
   vim.api.nvim_feedkeys(esc_term, "n", false)
   run_competitest()
 end, vim.tbl_extend("force", opts, { desc = "Run received testcases" }))
-map("n", "<F5>", run_competitest, vim.tbl_extend("force", opts, { desc = "Run received testcases fallback" }))
+map("n", "<F5>", cp.submit_current_file, vim.tbl_extend("force", opts, { desc = "Submit current file to Codeforces" }))
 map("n", "<C-A-u>", open_competitest_ui, vim.tbl_extend("force", opts, { desc = "Open CP helper UI" }))
 map("n", "<C-M-u>", open_competitest_ui, vim.tbl_extend("force", opts, { desc = "Open CP helper UI" }))
 map("i", "<C-A-u>", function()
