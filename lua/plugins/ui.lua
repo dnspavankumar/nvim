@@ -159,31 +159,6 @@ return {
   },
 
   {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local ok_vesper, vesper = pcall(require, "vesper")
-      local highlights = nil
-      if ok_vesper and vesper.bufferline then
-        highlights = vesper.bufferline.highlights
-      end
-
-      require("bufferline").setup({
-        highlights = highlights,
-        options = {
-          mode = "buffers",
-          separator_style = "slant",
-          always_show_bufferline = true,
-          diagnostics = "nvim_lsp",
-          show_buffer_close_icons = true,
-          show_close_icon = false,
-        },
-      })
-    end,
-  },
-
-  {
     "SmiteshP/nvim-navic",
     lazy = true,
     opts = {

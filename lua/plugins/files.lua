@@ -254,6 +254,20 @@ return {
         end,
         desc = 'Open mini.files (cwd)',
       },
+      {
+        '<c-b>',
+        function()
+          local path = vim.api.nvim_buf_get_name(0)
+          local t
+          if path == '' then
+            t = vim.uv.cwd()
+          else
+            t = vim.fn.fnamemodify(path, ':h')
+          end
+          require 'mini.files'.open(t, true)
+        end,
+        desc = 'Open mini.files (%:h)',
+      },
     },
 
     config = function(_, opts)
@@ -309,4 +323,86 @@ return {
     end,
   },
 
+  {
+    "akinsho/bufferline.nvim",
+    event = { 'BufNewFile', 'BufReadPost' },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      options = {
+        mode = "buffers",
+        separator_style = "slant",
+        always_show_bufferline = true,
+        diagnostics = "nvim_lsp",
+        show_buffer_close_icons = true,
+        show_close_icon = false,
+      },
+    },
+    keys = {
+      { "<leader>bn", "<cmd>BufferLineCycleNext<cr>", mode = "n", noremap = true, silent = true, desc = "Next buffer" },
+      { "<leader>bp", "<cmd>BufferLineCyclePrev<cr>", mode = "n", noremap = true, silent = true, desc = "Previous buffer" },
+      { "<leader>bd", "<cmd>BufferLinePickClose<cr>", mode = "n", noremap = true, silent = true, desc = "Close current buffer" },
+      {
+        "<C-Tab>",
+        "<cmd>BufferLineCycleNext<cr>",
+        mode = "n",
+        noremap = true,
+        silent = true,
+        desc = "Next buffer fallback"
+      },
+      {
+        "<C-Tab>",
+        function()
+          vim.cmd("stopinsert")
+          vim.cmd("BufferLineCycleNext")
+        end,
+        mode = "i",
+        noremap = true,
+        silent = true,
+        desc = "Next buffer fallback"
+      },
+      {
+        "<C-Tab>",
+        function()
+          local esc = vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true)
+          vim.api.nvim_feedkeys(esc, "n", false)
+          vim.cmd("BufferLineCycleNext")
+        end,
+        mode = "t",
+        noremap = true,
+        silent = true,
+        desc = "Next buffer fallback"
+      },
+      {
+        "<C-S-Tab>",
+        "<cmd>BufferLineCyclePrev<cr>",
+        mode = "n",
+        noremap = true,
+        silent = true,
+        desc = "Previous buffer fallback"
+      },
+      {
+        "<C-S-Tab>",
+        function()
+          vim.cmd("stopinsert")
+          vim.cmd("BufferLineCyclePrev")
+        end,
+        mode = "i",
+        noremap = true,
+        silent = true,
+        desc = "Previous buffer fallback"
+      },
+      {
+        "<C-S-Tab>",
+        function()
+          local esc = vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true)
+          vim.api.nvim_feedkeys(esc, "n", false)
+          vim.cmd("BufferLineCyclePrev")
+        end,
+        mode = "t",
+        noremap = true,
+        silent = true,
+        desc = "Previous buffer fallback"
+      },
+    },
+  },
 }
