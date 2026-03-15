@@ -9,7 +9,7 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 - File explorer (`mini.files`)
 - Floating terminal (`toggleterm`)
 - File tabs / buffer bar (`bufferline`)
-- Breadcrumbs in top bar (`barbecue` + `nvim-navic`)
+- Breadcrumbs in top bar (`nvim-navic` )
 - Editor scrollbar (`nvim-scrollbar`)
 - Indentation scope matching/highlighting (`indent-blankline`)
 - Ribbon-style statusline (powerline separators, auto adapts to current colorscheme)

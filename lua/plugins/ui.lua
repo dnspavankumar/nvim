@@ -122,8 +122,20 @@ return {
           globalstatus = true,
           component_separators = { left = "", right = "" },
           section_separators = { left = "", right = "" },
-          disabled_filetypes = {
-            statusline = { "NvimTree" },
+          disabled_filetypes = { statusline = { 'NvimTree', 'dashboard', 'alpha', 'ministarter', 'snacks_dashboard' } },
+        },
+        winbar = {
+          lualine_c = {
+            {
+              function()
+                return require 'nvim-navic'.get_location()
+              end,
+              cond = function()
+                local ok, navic = pcall(require, 'nvim-navic')
+                return ok and navic.is_available()
+              end,
+              color = 'dynamic',
+            }
           },
         },
         sections = {

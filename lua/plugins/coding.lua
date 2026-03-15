@@ -289,30 +289,6 @@ return {
   },
 
   {
-    "utilyre/barbecue.nvim",
-    name = "barbecue",
-    version = "*",
-    dependencies = {
-      "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons",
-    },
-
-    config = function()
-      require("barbecue").setup({
-        attach_navic = false,
-        create_autocmd = true,
-        show_dirname = true,
-        show_basename = true,
-        show_navic = true,
-        show_modified = true,
-        symbols = {
-          separator = " > ",
-        },
-      })
-    end,
-  },
-
-  {
     'folke/noice.nvim',
     event = 'VeryLazy',
     dependencies = {
