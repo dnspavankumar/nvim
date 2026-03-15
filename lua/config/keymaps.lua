@@ -26,3 +26,6 @@ map("i", "<C-z>", "<esc>u", vim.tbl_extend("force", opts, { desc = "Undo" }))
 map("n", "<C-y>", "<C-r>", vim.tbl_extend("force", opts, { desc = "Redo" }))
 map("i", "<C-y>", "<esc><C-r>", vim.tbl_extend("force", opts, { desc = "Redo" }))
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
+
+-- Lazy
+map("n", "<leader>L", ":Lazy<cr>", { desc = "Lazy" })
