@@ -15,7 +15,6 @@ return {
       local function set_eob_highlight()
         local comment = get_hl("Comment")
         local normal = get_hl("Normal")
-        local tree_normal = get_hl("NvimTreeNormal")
 
         local function shift_rgb(color, delta)
           if type(color) ~= "number" then
@@ -35,9 +34,6 @@ return {
 
         local normal_bg = normal.bg
         local normal_fg = normal.fg or 0xC9D1D9
-        local tree_bg = shift_rgb(tree_normal.bg or normal_bg, -10) or 0x202938
-        local status_bg = shift_rgb(normal_bg, 10) or 0x303A4A
-        local status_nc_bg = shift_rgb(normal_bg, 5) or 0x2A3342
         local eob_fg = comment.fg or 0x5B6078
 
         vim.api.nvim_set_hl(0, "EndOfBuffer", {
@@ -45,21 +41,6 @@ return {
           bg = normal_bg,
         })
 
-        -- Keep sidebar completely uniform after file list ends.
-        vim.api.nvim_set_hl(0, "NvimTreeNormal", {
-          bg = tree_bg,
-        })
-        vim.api.nvim_set_hl(0, "NvimTreeNormalNC", {
-          bg = tree_bg,
-        })
-        vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", {
-          fg = eob_fg,
-          bg = tree_bg,
-        })
-        vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", {
-          fg = 0xFFFFFF,
-          bg = tree_bg,
-        })
         vim.api.nvim_set_hl(0, "WinSeparator", {
           fg = 0xFFFFFF,
           bg = normal_bg,
@@ -67,25 +48,37 @@ return {
 
         vim.api.nvim_set_hl(0, "StatusLine", {
           fg = normal_fg,
-          bg = status_bg,
         })
         vim.api.nvim_set_hl(0, "StatusLineNC", {
           fg = eob_fg,
-          bg = status_nc_bg,
         })
 
-        for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
-          for _, section in ipairs({ "b", "c", "x", "y" }) do
+        local groups = {
+          "Normal", "NormalNC", "NormalFloat", "FloatBorder",
+          "Pmenu", "CursorLine", "StatusLine", "TabLineFill", "SignColumn",
+        }
+
+        for _, g in ipairs(groups) do
+          vim.api.nvim_set_hl(0, g, { bg = 'NONE' })
+        end
+
+        for _, mode in ipairs { "normal", "insert", "visual", "replace", "command", "inactive" } do
+          for _, section in ipairs { "b", "c", "x", "y" } do
             local group = "lualine_" .. section .. "_" .. mode
             local existing = get_hl(group)
             vim.api.nvim_set_hl(0, group, {
               fg = existing.fg or normal_fg,
-              bg = mode == "inactive" and status_nc_bg or status_bg,
+              bg = 'NONE',
             })
           end
         end
       end
 
+      require("github-theme").setup {
+        options = {
+          transparent = true,
+        }
+      }
       vim.cmd.colorscheme("github_dark")
       set_eob_highlight()
 
@@ -95,16 +88,29 @@ return {
       })
     end,
   },
+
   {
     "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 999,
-    opts = {},
+    opts = {
+      transparent = true,
+      overrides = {
+        Pmenu = { bg = 'NONE' },
+        CursorLine = { bg = 'NONE' },
+        NormalFloat = { bg = 'NONE' },
+        FloatBorder = { bg = 'NONE' },
+        StatusLine = { bg = 'NONE' },
+        TabLineFill = { bg = 'NONE' },
+      }
+    },
   },
+
   {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
   },
+
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -154,30 +160,7 @@ return {
       })
     end,
   },
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local ok_vesper, vesper = pcall(require, "vesper")
-      local highlights = nil
-      if ok_vesper and vesper.bufferline then
-        highlights = vesper.bufferline.highlights
-      end
 
-      require("bufferline").setup({
-        highlights = highlights,
-        options = {
-          mode = "buffers",
-          separator_style = "slant",
-          always_show_bufferline = true,
-          diagnostics = "nvim_lsp",
-          show_buffer_close_icons = true,
-          show_close_icon = false,
-        },
-      })
-    end,
-  },
   {
     "SmiteshP/nvim-navic",
     lazy = true,
@@ -185,30 +168,48 @@ return {
       highlight = true,
       separator = " > ",
       depth_limit = 6,
+      icons = {
+        Array         = ' ',
+        Boolean       = '󰨙 ',
+        Class         = ' ',
+        Color         = ' ',
+        Control       = ' ',
+        Collapsed     = ' ',
+        Constant      = '󰏿 ',
+        Constructor   = ' ',
+        Enum          = ' ',
+        EnumMember    = ' ',
+        Event         = ' ',
+        Field         = ' ',
+        File          = ' ',
+        Folder        = ' ',
+        Function      = '󰊕 ',
+        Interface     = ' ',
+        Key           = ' ',
+        Keyword       = ' ',
+        Method        = '󰊕 ',
+        Module        = ' ',
+        Namespace     = '󰦮 ',
+        Null          = ' ',
+        Number        = '󰎠 ',
+        Object        = ' ',
+        Operator      = ' ',
+        Package       = ' ',
+        Property      = ' ',
+        Reference     = ' ',
+        Snippet       = '󱄽 ',
+        String        = ' ',
+        Struct        = '󰆼 ',
+        Supermaven    = ' ',
+        Text          = ' ',
+        TypeParameter = ' ',
+        Unit          = ' ',
+        Value         = ' ',
+        Variable      = '󰀫 ',
+      },
     },
   },
-  {
-    "utilyre/barbecue.nvim",
-    name = "barbecue",
-    version = "*",
-    dependencies = {
-      "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("barbecue").setup({
-        attach_navic = false,
-        create_autocmd = true,
-        show_dirname = true,
-        show_basename = true,
-        show_navic = true,
-        show_modified = true,
-        symbols = {
-          separator = " > ",
-        },
-      })
-    end,
-  },
+
   {
     "petertriho/nvim-scrollbar",
     event = "VeryLazy",
@@ -237,6 +238,7 @@ return {
       end
     end,
   },
+
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
@@ -272,67 +274,76 @@ return {
       },
     },
   },
+
   {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local function on_attach(bufnr)
-        local api = require("nvim-tree.api")
-        api.config.mappings.default_on_attach(bufnr)
-
-        local winid = vim.fn.bufwinid(bufnr)
-        if winid ~= -1 then
-          vim.api.nvim_set_option_value(
-            "winhighlight",
-            "Normal:NvimTreeNormal,NormalNC:NvimTreeNormalNC,EndOfBuffer:NvimTreeEndOfBuffer,WinSeparator:NvimTreeWinSeparator,CursorLine:NvimTreeCursorLine,CursorLineNr:NvimTreeCursorLineNr",
-            { win = winid }
-          )
-        end
-      end
-
-      require("nvim-tree").setup({
-        on_attach = on_attach,
-        sort = { sorter = "case_sensitive" },
-        view = {
-          width = 36,
-          side = "left",
-        },
-        renderer = {
-          root_folder_label = false,
-          group_empty = true,
-          indent_markers = { enable = true },
-          icons = {
-            show = {
-              file = true,
-              folder = true,
-              folder_arrow = true,
-              git = true,
-            },
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    opts_extend = { 'spec' },
+    opts = {
+      preset = 'helix',
+      spec = {
+        { '<BS>',      desc = 'Decrement Selection', mode = 'x' },
+        { '<c-space>', desc = 'Increment Selection', mode = { 'x', 'n' } },
+        {
+          mode = { 'n', 'v' },
+          { '<leader>t', group = 'tabs' },
+          { '<leader>c', group = 'lsp' },
+          { '<leader>f', group = 'file/find' },
+          { '<leader>g', group = 'git' },
+          { '<leader>gh', group = 'hunks' },
+          { '<leader>q', group = 'quit' },
+          { '<leader>s', group = 'search' },
+          { '<leader>u', group = 'ui', icon = { icon = '󰙵 ', color = 'cyan' } },
+          { '[', group = 'prev' },
+          { ']', group = 'next' },
+          { 'g', group = 'goto' },
+          { 'gs', group = 'surround' },
+          { 'z', group = 'fold' },
+          {
+            '<leader>b',
+            group = 'buffer',
+            expand = function()
+              return require 'which-key.extras'.expand.buf()
+            end,
           },
-        },
-        filters = {
-          dotfiles = false,
-        },
-        git = {
-          enable = true,
-          ignore = false,
-        },
-        update_focused_file = {
-          enable = true,
-          update_root = true,
-        },
-        actions = {
-          open_file = {
-            quit_on_open = false,
-            resize_window = true,
+          {
+            '<leader>w',
+            group = 'windows',
+            proxy = '<c-w>',
+            expand = function()
+              return require 'which-key.extras'.expand.win()
+            end,
           },
+          -- better descriptions
+          { 'gx', desc = 'Open with system app' },
         },
-      })
+      },
+    },
+    keys = {
+      {
+        '<leader>?',
+        function()
+          require 'which-key'.show { global = true }
+        end,
+        desc = 'Buffer Keymaps (which-key)',
+      },
+      {
+        '<c-w><space>',
+        function()
+          require 'which-key'.show { keys = '<c-w>', loop = true }
+        end,
+        desc = 'Window Hydra Mode',
+      },
+      {
+        '<space>b<space>',
+        function()
+          require 'which-key'.show { keys = '<space>b', loop = true }
+        end,
+        desc = 'Buffer Hydra Mode',
+      }
+    },
+    config = function(_, opts)
+      require 'which-key'.setup(opts)
     end,
-  },
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    opts = {},
   },
 }
