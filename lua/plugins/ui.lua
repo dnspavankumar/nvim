@@ -15,7 +15,6 @@ return {
       local function set_eob_highlight()
         local comment = get_hl("Comment")
         local normal = get_hl("Normal")
-        local tree_normal = get_hl("NvimTreeNormal")
 
         local function shift_rgb(color, delta)
           if type(color) ~= "number" then
@@ -35,9 +34,6 @@ return {
 
         local normal_bg = normal.bg
         local normal_fg = normal.fg or 0xC9D1D9
-        local tree_bg = shift_rgb(tree_normal.bg or normal_bg, -10) or 0x202938
-        local status_bg = shift_rgb(normal_bg, 10) or 0x303A4A
-        local status_nc_bg = shift_rgb(normal_bg, 5) or 0x2A3342
         local eob_fg = comment.fg or 0x5B6078
 
         vim.api.nvim_set_hl(0, "EndOfBuffer", {
@@ -45,21 +41,6 @@ return {
           bg = normal_bg,
         })
 
-        -- Keep sidebar completely uniform after file list ends.
-        vim.api.nvim_set_hl(0, "NvimTreeNormal", {
-          bg = tree_bg,
-        })
-        vim.api.nvim_set_hl(0, "NvimTreeNormalNC", {
-          bg = tree_bg,
-        })
-        vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", {
-          fg = eob_fg,
-          bg = tree_bg,
-        })
-        vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", {
-          fg = 0xFFFFFF,
-          bg = tree_bg,
-        })
         vim.api.nvim_set_hl(0, "WinSeparator", {
           fg = 0xFFFFFF,
           bg = normal_bg,
@@ -67,25 +48,37 @@ return {
 
         vim.api.nvim_set_hl(0, "StatusLine", {
           fg = normal_fg,
-          bg = status_bg,
         })
         vim.api.nvim_set_hl(0, "StatusLineNC", {
           fg = eob_fg,
-          bg = status_nc_bg,
         })
 
-        for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
-          for _, section in ipairs({ "b", "c", "x", "y" }) do
+        local groups = {
+          "Normal", "NormalNC", "NormalFloat", "FloatBorder",
+          "Pmenu", "CursorLine", "StatusLine", "TabLineFill", "SignColumn",
+        }
+
+        for _, g in ipairs(groups) do
+          vim.api.nvim_set_hl(0, g, { bg = 'NONE' })
+        end
+
+        for _, mode in ipairs { "normal", "insert", "visual", "replace", "command", "inactive" } do
+          for _, section in ipairs { "b", "c", "x", "y" } do
             local group = "lualine_" .. section .. "_" .. mode
             local existing = get_hl(group)
             vim.api.nvim_set_hl(0, group, {
               fg = existing.fg or normal_fg,
-              bg = mode == "inactive" and status_nc_bg or status_bg,
+              bg = 'NONE',
             })
           end
         end
       end
 
+      require("github-theme").setup {
+        options = {
+          transparent = true,
+        }
+      }
       vim.cmd.colorscheme("github_dark")
       set_eob_highlight()
 
@@ -100,7 +93,17 @@ return {
     "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 999,
-    opts = {},
+    opts = {
+      transparent = true,
+      overrides = {
+        Pmenu = { bg = 'NONE' },
+        CursorLine = { bg = 'NONE' },
+        NormalFloat = { bg = 'NONE' },
+        FloatBorder = { bg = 'NONE' },
+        StatusLine = { bg = 'NONE' },
+        TabLineFill = { bg = 'NONE' },
+      }
+    },
   },
 
   {
