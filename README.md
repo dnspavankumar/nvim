@@ -18,7 +18,7 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 - Auto-fill template when opening an empty `.cpp` file
 - `F5` Codeforces submit from inside Neovim
 - Autocomplete, Treesitter, and LSP support
-- Installed themes: `gruvbox`
+- Installed themes: `vesper` (default) and `gruvbox`
 
 ## Requirements
 
