@@ -9,7 +9,7 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 - File explorer (`mini.files`)
 - Floating terminal (`toggleterm`)
 - File tabs / buffer bar (`bufferline`)
-- Breadcrumbs in top bar (`barbecue` + `nvim-navic`)
+- Breadcrumbs in top bar (`nvim-navic` )
 - Editor scrollbar (`nvim-scrollbar`)
 - Indentation scope matching/highlighting (`indent-blankline`)
 - Ribbon-style statusline (powerline separators, auto adapts to current colorscheme)
@@ -68,12 +68,10 @@ It is highly recommended to learn vim-motions. It will help you experience the r
 | Action | Keys | Mode |
 |---|---|---|
 | Copy line/selection | `Ctrl+C` | Normal/Visual/Insert |
-| Paste | `Ctrl+V` | Normal/Visual/Insert |
 | Cut line/selection | `Ctrl+X` | Normal/Visual/Insert |
 | Select all | `Ctrl+A` | Normal/Insert |
 | Save | `Ctrl+S` | Normal/Insert/Visual |
 | Undo | `Ctrl+Z` | Normal/Insert |
-| Redo | `Ctrl+Y` | Normal/Insert |
 | Clear search highlight | `Esc` | Normal |
 
 ### Sidebar and Terminal
@@ -88,11 +86,11 @@ It is highly recommended to learn vim-motions. It will help you experience the r
 
 | Action | Keys | Mode |
 |---|---|---|
-| Fuzzy-find files | `<leader>ff` | Normal/Insert/Terminal |
+| Fuzzy-find files | `<leader>ff` | Normal |
 | Next buffer | `<leader>bn` | Normal |
-| Next buffer fallback | `Ctrl+Tab` | Normal |
+| Next buffer fallback | `Ctrl+Tab` | Normal/Insert |
 | Previous buffer | `<leader>bp` | Normal |
-| Previous buffer fallback | `Ctrl+Shift+Tab` | Normal |
+| Previous buffer fallback | `Ctrl+Shift+Tab` | Normal/Insert |
 | Close current buffer | `<leader>bd` | Normal |
 
 ### Competitive Programming (CompetiTest)

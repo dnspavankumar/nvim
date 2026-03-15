@@ -122,17 +122,49 @@ return {
           globalstatus = true,
           component_separators = { left = "", right = "" },
           section_separators = { left = "", right = "" },
-          disabled_filetypes = {
-            statusline = { "NvimTree" },
+          disabled_filetypes = { statusline = { 'NvimTree', 'dashboard', 'alpha', 'ministarter', 'snacks_dashboard' } },
+        },
+        winbar = {
+          lualine_c = {
+            {
+              function()
+                return require 'nvim-navic'.get_location()
+              end,
+              cond = function()
+                local ok, navic = pcall(require, 'nvim-navic')
+                return ok and navic.is_available()
+              end,
+              color = 'dynamic',
+            }
           },
         },
         sections = {
           lualine_a = {
             { "mode", separator = { left = "", right = "" }, right_padding = 2 },
           },
-          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_b = {
+            "branch",
+            "diff",
+            {
+              'diagnostics',
+              symbols = {
+                error = ' ',
+                warn  = ' ',
+                info  = ' ',
+                hint  = ' ',
+              },
+            },
+
+          },
           lualine_c = {
-            { "filename", path = 1, symbols = { modified = " ●", readonly = " ", unnamed = "[No Name]" } },
+            {
+              "filename",
+              path = 1,
+              symbols = {
+                modified = " ●",
+                readonly = " ",
+              }
+            },
           },
           lualine_x = { "encoding", "fileformat", "filetype" },
           lualine_y = { "progress" },
