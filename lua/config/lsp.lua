@@ -1,3 +1,32 @@
+-- diagnostics config
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'VeryLazy',
+  callback = function()
+    vim.diagnostic.config
+    {
+      float = { border = 'rounded' },
+      underline = { severity = 'ERROR' },
+      update_in_insert = false,
+      virtual_text = {
+        current_line = false,
+        spacing = 4,
+        source = 'if_many',
+        prefix = '●',
+      },
+      severity_sort = true,
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = ' ',
+          [vim.diagnostic.severity.WARN] = ' ',
+          [vim.diagnostic.severity.HINT] = ' ',
+          [vim.diagnostic.severity.INFO] = ' ',
+        },
+      },
+    }
+  end
+})
+
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "c", "cpp", "objc", "objcpp" },
   callback = function(args)
