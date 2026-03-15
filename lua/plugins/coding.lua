@@ -59,12 +59,6 @@ return {
   },
 
   {
-    "numToStr/Comment.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-
-  {
     "utilyre/barbecue.nvim",
     name = "barbecue",
     version = "*",
