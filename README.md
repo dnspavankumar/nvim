@@ -6,20 +6,19 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 
 - C++ compile/run via `g++` in `competitest.nvim`
 - Competitive Companion receive support (port `27121`)
-- Sidebar file explorer (`nvim-tree`)
+- File explorer (`mini.files`)
 - Floating terminal (`toggleterm`)
 - File tabs / buffer bar (`bufferline`)
 - Breadcrumbs in top bar (`barbecue` + `nvim-navic`)
 - Editor scrollbar (`nvim-scrollbar`)
 - Indentation scope matching/highlighting (`indent-blankline`)
-- Visible `~` markers after end of file lines
 - Ribbon-style statusline (powerline separators, auto adapts to current colorscheme)
 - CompetiTest helper in right sidebar split layout
 - Persistent editable C++ template (`:Template` or `:template`)
 - Auto-fill template when opening an empty `.cpp` file
 - `F5` Codeforces submit from inside Neovim
 - Autocomplete, Treesitter, and LSP support
-- Installed themes: `vesper` (default) and `gruvbox`
+- Installed themes: `gruvbox`
 
 ## Requirements
 
@@ -27,6 +26,7 @@ This config is tuned for C++ competitive programming with VS Code-like shortcuts
 - `g++` in PATH
 - Optional but recommended: `clangd` in PATH (for IDE features)
 - Browser extension: Competitive Companion
+- Optional but highly recommend: A nerd font. Suggested - JetBrains Nerd Font Mono
 
 ## First Run
 
@@ -61,6 +61,8 @@ Use this flow each time you solve a Codeforces/online judge problem.
 
 ## Keybindings
 
+It is highly recommended to learn vim-motions. It will help you experience the real power of Neovim. You can access the in-built guide using `:Tutor`.
+
 ### Editing (VS Code style)
 
 | Action | Keys | Mode |
@@ -86,11 +88,12 @@ Use this flow each time you solve a Codeforces/online judge problem.
 
 | Action | Keys | Mode |
 |---|---|---|
-| Next file tab | `Ctrl+Tab` | Normal/Insert/Terminal |
-| Previous file tab | `Ctrl+Shift+Tab` | Normal/Insert/Terminal |
-| Next tab fallback | `Alt+Right` or `<leader>bn` | Normal |
-| Previous tab fallback | `Alt+Left` or `<leader>bp` | Normal |
-| Close current tab | `<leader>bd` | Normal |
+| Fuzzy-find files | `<leader>ff` | Normal/Insert/Terminal |
+| Next buffer | `<leader>bn` | Normal |
+| Next buffer fallback | `Ctrl+Tab` | Normal |
+| Previous buffer | `<leader>bp` | Normal |
+| Previous buffer fallback | `Ctrl+Shift+Tab` | Normal |
+| Close current buffer | `<leader>bd` | Normal |
 
 ### Competitive Programming (CompetiTest)
 
@@ -120,6 +123,8 @@ Use this flow each time you solve a Codeforces/online judge problem.
 | Find references | `gr` | Normal |
 | Hover docs | `K` | Normal |
 | Format file | `<leader>cf` | Normal |
+
+To check all keymaps, do `<leader>?`.
 
 ## Competitive Companion Flow
 
