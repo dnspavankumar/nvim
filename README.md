@@ -68,7 +68,6 @@ It is highly recommended to learn vim-motions. It will help you experience the r
 | Action | Keys | Mode |
 |---|---|---|
 | Copy line/selection | `Ctrl+C` | Normal/Visual/Insert |
-| Paste | `Ctrl+V` | Normal/Visual/Insert |
 | Cut line/selection | `Ctrl+X` | Normal/Visual/Insert |
 | Select all | `Ctrl+A` | Normal/Insert |
 | Save | `Ctrl+S` | Normal/Insert/Visual |
