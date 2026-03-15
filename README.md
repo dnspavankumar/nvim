@@ -72,7 +72,6 @@ It is highly recommended to learn vim-motions. It will help you experience the r
 | Select all | `Ctrl+A` | Normal/Insert |
 | Save | `Ctrl+S` | Normal/Insert/Visual |
 | Undo | `Ctrl+Z` | Normal/Insert |
-| Redo | `Ctrl+Y` | Normal/Insert |
 | Clear search highlight | `Esc` | Normal |
 
 ### Sidebar and Terminal
