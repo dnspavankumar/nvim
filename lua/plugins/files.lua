@@ -324,6 +324,59 @@ return {
   },
 
   {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    cmd = 'Neotree',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'MunifTanjim/nui.nvim',
+    },
+    keys = {
+      {
+        '<leader>e',
+        function()
+          require('neo-tree.command').execute { toggle = true, dir = vim.uv.cwd() }
+        end,
+        desc = 'Toggle file tree',
+      },
+    },
+    opts = {
+      source_selector = {
+        winbar = true,
+        sources = {
+          { source = 'filesystem', display_name = '  Files ' },
+        },
+      },
+      filesystem = {
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+        filtered_items = {
+          visible = false,
+          show_hidden_count = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+          hide_by_name = { '.git' },
+          never_show = { '.DS_Store' },
+        },
+        window = {
+          mappings = {
+            ['<leader>e'] = 'close_window',
+          },
+        },
+      },
+      event_handlers = {
+        {
+          event = 'neo_tree_buffer_enter',
+          handler = function()
+            vim.opt_local.signcolumn = 'auto'
+          end,
+        },
+      },
+    },
+  },
+
+  {
     "akinsho/bufferline.nvim",
     event = { 'BufNewFile', 'BufReadPost' },
     dependencies = { "nvim-tree/nvim-web-devicons" },

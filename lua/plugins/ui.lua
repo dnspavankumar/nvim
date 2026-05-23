@@ -54,7 +54,7 @@ return {
         })
 
         local groups = {
-          "Normal", "NormalNC", "NormalFloat", "FloatBorder",
+          "NormalFloat", "FloatBorder",
           "Pmenu", "CursorLine", "StatusLine", "TabLineFill", "SignColumn",
         }
 
@@ -76,7 +76,7 @@ return {
 
       require("github-theme").setup {
         options = {
-          transparent = true,
+          transparent = false,
         }
       }
       vim.cmd.colorscheme("github_dark")
@@ -87,6 +87,19 @@ return {
         callback = set_eob_highlight,
       })
     end,
+  },
+
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      transparent = false,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
+    },
   },
 
   {
@@ -123,7 +136,7 @@ return {
           component_separators = { left = "", right = "" },
           section_separators = { left = "", right = "" },
           disabled_filetypes = {
-            statusline = { "NvimTree" },
+            statusline = { "NvimTree", "neo-tree" },
           },
         },
         sections = {
