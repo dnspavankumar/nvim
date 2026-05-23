@@ -30,6 +30,26 @@ opt.backup = false
 opt.undofile = true
 opt.fillchars:append({ eob = "~" })
 
+-- Disable persistent undo (undodir) if you want, but undofile is fine
+-- Autosave on InsertLeave, TextChanged, and FocusLost
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged", "FocusLost" }, {
+  pattern = "*",
+  callback = function()
+    if vim.bo.modified and vim.bo.modifiable and vim.fn.expand("%") ~= "" then
+      vim.cmd("silent! write")
+    end
+  end,
+})
+
+-- Unlock every file for editing (no readonly)
+vim.api.nvim_create_autocmd("BufRead", {
+  pattern = "*",
+  callback = function()
+    vim.bo.readonly = false
+    vim.bo.modifiable = true
+  end,
+})
+
 vim.filetype.add({
   extension = {
     h = "cpp",
