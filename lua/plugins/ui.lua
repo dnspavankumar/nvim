@@ -1,100 +1,44 @@
 return {
   {
     "projekt0n/github-nvim-theme",
+    name = "github-theme",
     lazy = false,
     priority = 1000,
     config = function()
-      local function get_hl(name)
-        local ok, value = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
-        if ok then
-          return value
-        end
-        return {}
-      end
-
-      local function set_eob_highlight()
-        local comment = get_hl("Comment")
-        local normal = get_hl("Normal")
-
-        local function shift_rgb(color, delta)
-          if type(color) ~= "number" then
-            return nil
-          end
-
-          local r = math.floor(color / 0x10000)
-          local g = math.floor((color % 0x10000) / 0x100)
-          local b = color % 0x100
-
-          r = math.min(255, math.max(0, r + delta))
-          g = math.min(255, math.max(0, g + delta))
-          b = math.min(255, math.max(0, b + delta))
-
-          return (r * 0x10000) + (g * 0x100) + b
-        end
-
-        local normal_bg = normal.bg
-        local normal_fg = normal.fg or 0xC9D1D9
-        local eob_fg = comment.fg or 0x5B6078
-
-        vim.api.nvim_set_hl(0, "EndOfBuffer", {
-          fg = eob_fg,
-          bg = normal_bg,
-        })
-
-        vim.api.nvim_set_hl(0, "WinSeparator", {
-          fg = 0xFFFFFF,
-          bg = normal_bg,
-        })
-
-        vim.api.nvim_set_hl(0, "StatusLine", {
-          fg = normal_fg,
-        })
-        vim.api.nvim_set_hl(0, "StatusLineNC", {
-          fg = eob_fg,
-        })
-
-        local groups = {
-          "NormalFloat", "FloatBorder",
-          "Pmenu", "CursorLine", "StatusLine", "TabLineFill", "SignColumn",
-        }
-
-        for _, g in ipairs(groups) do
-          vim.api.nvim_set_hl(0, g, { bg = 'NONE' })
-        end
-
-        for _, mode in ipairs { "normal", "insert", "visual", "replace", "command", "inactive" } do
-          for _, section in ipairs { "b", "c", "x", "y" } do
-            local group = "lualine_" .. section .. "_" .. mode
-            local existing = get_hl(group)
-            vim.api.nvim_set_hl(0, group, {
-              fg = existing.fg or normal_fg,
-              bg = 'NONE',
-            })
-          end
-        end
-      end
-
       require("github-theme").setup {
         options = {
-          transparent = false,
-        }
+          transparent = true,
+          hide_nc_statusline = true,
+        },
+        groups = {
+          all = {
+            Normal = { bg = "none" },
+            NormalNC = { bg = "none" },
+            NormalFloat = { bg = "none" },
+            FloatBorder = { bg = "none" },
+            Pmenu = { bg = "none" },
+            PmenuSel = { bg = "none" },
+            StatusLine = { bg = "none" },
+            StatusLineNC = { bg = "none" },
+            TabLine = { bg = "none" },
+            TabLineFill = { bg = "none" },
+            TabLineSel = { bg = "none" },
+            CursorLine = { bg = "none" },
+            CursorLineNr = { bg = "none" },
+            SignColumn = { bg = "none" },
+            WinSeparator = { bg = "none" },
+          },
+        },
       }
-      vim.cmd.colorscheme("github_dark")
-      set_eob_highlight()
-
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        group = vim.api.nvim_create_augroup("visible-eob-tilde", { clear = true }),
-        callback = set_eob_highlight,
-      })
     end,
   },
 
   {
     "folke/tokyonight.nvim",
     lazy = false,
-    priority = 1000,
+    priority = 999,
     opts = {
-      transparent = false,
+      transparent = true,
       styles = {
         sidebars = "transparent",
         floats = "transparent",
@@ -116,6 +60,52 @@ return {
         StatusLine = { bg = 'NONE' },
         TabLineFill = { bg = 'NONE' },
       }
+    },
+  },
+
+  {
+    "jzone1366/twilight.nvim",
+    lazy = false,
+    priority = 999,
+  },
+
+  {
+    "sjl/badwolf",
+    lazy = false,
+    priority = 999,
+  },
+
+  {
+    "metalelf0/black-metal-theme-neovim",
+    lazy = false,
+    priority = 999,
+    config = function()
+      require("black-metal").setup {
+        theme = "bathory",
+        variant = "dark",
+        transparent = true,
+      }
+    end,
+  },
+
+  {
+    "navarasu/onedark.nvim",
+    lazy = false,
+    priority = 999,
+    opts = {
+      style = "dark",
+      transparent = true,
+    },
+  },
+
+  {
+    "EdenEast/nightfox.nvim",
+    lazy = false,
+    priority = 999,
+    opts = {
+      options = {
+        transparent = true,
+      },
     },
   },
 

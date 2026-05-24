@@ -33,3 +33,15 @@ lazy.setup("plugins", {
   change_detection = { notify = false },
   ui = { border = "rounded" },
 })
+
+if vim.g.colorscheme_skip_persist then
+  return
+end
+
+local last_file = vim.fn.stdpath("config") .. "/last_colorscheme"
+local ok, lines = pcall(vim.fn.readfile, last_file)
+if ok and #lines > 0 and lines[1] ~= "" then
+  pcall(vim.cmd.colorscheme, lines[1])
+else
+  pcall(vim.cmd.colorscheme, "onedark")
+end

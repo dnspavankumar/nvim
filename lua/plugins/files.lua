@@ -383,13 +383,65 @@ return {
     opts = {
       options = {
         mode = "buffers",
-        separator_style = "slant",
+        separator_style = "",
         always_show_bufferline = true,
         diagnostics = "nvim_lsp",
         show_buffer_close_icons = true,
         show_close_icon = false,
       },
     },
+    config = function(_, opts)
+      require("bufferline").setup(opts)
+
+      local function apply_transparent()
+        local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal" }).fg
+
+        local function dim_color(hex, factor)
+          if not hex then return nil end
+          local r = bit.rshift(bit.band(hex, 0xFF0000), 16)
+          local g = bit.rshift(bit.band(hex, 0x00FF00), 8)
+          local b = bit.band(hex, 0x0000FF)
+          return string.format("#%02x%02x%02x", math.floor(r * factor), math.floor(g * factor), math.floor(b * factor))
+        end
+
+        local dimmed_fg = normal_fg and dim_color(normal_fg, 0.5) or nil
+
+        local groups = {
+          BufferLineBackground = { bg = "none" },
+          BufferLineFill = { bg = "none" },
+          BufferLineTab = { bg = "none" },
+          BufferLineTabSelected = { bg = "none" },
+          BufferLineTabClose = { bg = "none" },
+          BufferLineBufferVisible = { bg = "none", fg = dimmed_fg },
+          BufferLineBufferSelected = { bg = "none" },
+          BufferLineSeparator = { bg = "none" },
+          BufferLineSeparatorVisible = { bg = "none" },
+          BufferLineSeparatorSelected = { bg = "none" },
+          BufferLineCloseButton = { bg = "none", fg = dimmed_fg },
+          BufferLineCloseButtonVisible = { bg = "none", fg = dimmed_fg },
+          BufferLineCloseButtonSelected = { bg = "none" },
+          BufferLineIndicatorVisible = { bg = "none" },
+          BufferLineIndicatorSelected = { bg = "none" },
+          BufferLineModified = { bg = "none", fg = dimmed_fg },
+          BufferLineModifiedVisible = { bg = "none", fg = dimmed_fg },
+          BufferLineModifiedSelected = { bg = "none" },
+          BufferLineDiagnostic = { bg = "none", fg = dimmed_fg },
+          BufferLineDiagnosticVisible = { bg = "none", fg = dimmed_fg },
+          BufferLineDiagnosticSelected = { bg = "none" },
+        }
+        for group, hl in pairs(groups) do
+          vim.api.nvim_set_hl(0, group, hl)
+        end
+      end
+
+      apply_transparent()
+
+      local bufferline_hl = vim.api.nvim_create_augroup("bufferline_transparent", { clear = true })
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = bufferline_hl,
+        callback = apply_transparent,
+      })
+    end,
     keys = {
       { "<leader>bn", "<cmd>BufferLineCycleNext<cr>", mode = "n", noremap = true, silent = true, desc = "Next buffer" },
       { "<leader>bp", "<cmd>BufferLineCyclePrev<cr>", mode = "n", noremap = true, silent = true, desc = "Previous buffer" },

@@ -55,3 +55,37 @@ vim.filetype.add({
     h = "cpp",
   },
 })
+
+local function set_transparent(hl)
+  vim.api.nvim_set_hl(0, hl, { bg = "none" })
+end
+
+local transparent_hl_group = vim.api.nvim_create_augroup("transparent_highlights", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = transparent_hl_group,
+  callback = function()
+    local groups = {
+      "Normal", "NormalNC", "NormalFloat", "FloatBorder",
+      "Pmenu", "PmenuSel",
+      "StatusLine", "StatusLineNC",
+      "TabLine", "TabLineFill", "TabLineSel",
+      "CursorLine", "CursorLineNr",
+      "SignColumn", "WinSeparator",
+    }
+    for _, hl in ipairs(groups) do
+      pcall(set_transparent, hl)
+    end
+  end,
+})
+
+-- Persist last used colorscheme
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("save_colorscheme", { clear = true }),
+  callback = function()
+    local file = vim.fn.stdpath("config") .. "/last_colorscheme"
+    local name = vim.g.colors_name
+    if name then
+      vim.fn.writefile({ name }, file)
+    end
+  end,
+})
