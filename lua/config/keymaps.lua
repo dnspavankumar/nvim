@@ -1,31 +1,34 @@
-local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
+local keymap = vim.keymap
 
--- better up/down
-map({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
-map({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
-map({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
-map({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
+-- Clear search highlighting with <leader>nh
+keymap.set("n", "<leader>nh", ":nohlsearch<CR>", { desc = "Clear search highlight" })
 
--- VS Code-like editing shortcuts
-map("n", "<C-c>", 'yy', vim.tbl_extend("force", opts, { desc = "Copy line" }))
-map({ "x", "v" }, "<C-c>", 'y', vim.tbl_extend("force", opts, { desc = "Copy selection" }))
-map("i", "<C-c>", '<Esc>"+yygi', vim.tbl_extend("force", opts, { desc = "Copy line" }))
-map("n", "<C-v>", 'p', vim.tbl_extend("force", opts, { desc = "Paste" }))
-map("x", "<C-v>", 'p', vim.tbl_extend("force", opts, { desc = "Paste over selection" }))
-map("i", "<C-v>", "<C-r>+", vim.tbl_extend("force", opts, { desc = "Paste in insert mode" }))
-map("n", "<C-x>", 'dd', vim.tbl_extend("force", opts, { desc = "Cut line" }))
-map("x", "<C-x>", 'd', vim.tbl_extend("force", opts, { desc = "Cut selection" }))
-map("i", "<C-x>", '<Esc>ddgi', vim.tbl_extend("force", opts, { desc = "Cut line" }))
-map("n", "<C-a>", "ggyG<c-o>", vim.tbl_extend("force", opts, { desc = "Select all" }))
-map("i", "<C-a>", "<Esc>ggyG<c-o>", vim.tbl_extend("force", opts, { desc = "Select all" }))
-map({ "n", "v" }, "<C-s>", "<esc><cmd>w<CR>", vim.tbl_extend("force", opts, { desc = "Save file" }))
-map("i", "<C-s>", "<Esc><cmd>w<CR>a", vim.tbl_extend("force", opts, { desc = "Save file" }))
-map("n", "<C-z>", "u", vim.tbl_extend("force", opts, { desc = "Undo" }))
-map("i", "<C-z>", "<esc>u", vim.tbl_extend("force", opts, { desc = "Undo" }))
-map("n", "<C-y>", "<C-r>", vim.tbl_extend("force", opts, { desc = "Redo" }))
-map("i", "<C-y>", "<esc><C-r>", vim.tbl_extend("force", opts, { desc = "Redo" }))
-map("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
+-- Better window navigation
+keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window" })
+keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window" })
+keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window" })
+keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window" })
 
--- Lazy
-map("n", "<leader>L", ":Lazy<cr>", { desc = "Lazy" })
+-- Window splitting
+keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
+keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
+keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+
+-- Buffer navigation
+keymap.set("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Prev Buffer" })
+keymap.set("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next Buffer" })
+keymap.set("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete Buffer" })
+
+-- Neo-tree toggle
+keymap.set("n", "<leader>e", "<cmd>Neotree toggle left<CR>", { desc = "Toggle file explorer sidebar" })
+keymap.set("n", "<leader>fe", "<cmd>Neotree focus<CR>", { desc = "Focus file explorer sidebar" })
+
+-- CompetiTest Keymaps (Competitive programming specific)
+keymap.set("n", "<leader>pr", "<cmd>CompetiTest run<CR>", { desc = "CompetiTest: Run Tests" })
+keymap.set("n", "<leader>pc", "<cmd>CompetiTest compile<CR>", { desc = "CompetiTest: Compile Only" })
+keymap.set("n", "<leader>pa", "<cmd>CompetiTest add_testcase<CR>", { desc = "CompetiTest: Add Testcase" })
+keymap.set("n", "<leader>pe", "<cmd>CompetiTest edit_testcase<CR>", { desc = "CompetiTest: Edit Testcase" })
+keymap.set("n", "<leader>pd", "<cmd>CompetiTest delete_testcase<CR>", { desc = "CompetiTest: Delete Testcase" })
+keymap.set("n", "<leader>pg", "<cmd>CompetiTest receive<CR>", { desc = "CompetiTest: Receive/Parse problem" })
+keymap.set("n", "<leader>pi", "<cmd>CompetiTest show_ui<CR>", { desc = "CompetiTest: Show UI" })

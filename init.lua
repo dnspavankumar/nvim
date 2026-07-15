@@ -1,5 +1,10 @@
+-- Map leader to space
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Load options, keymaps, and boot lazy.nvim
 require("config.options")
-require("utils.cp").setup()
 require("config.keymaps")
-require("config.lsp")
+require("config.autocmds")
 require("config.lazy")
+
