@@ -63,11 +63,6 @@ inline void solve() {
 }
 
 int32_t main() {
-    #ifndef ONLINE_JUDGE
-        freopen("input.run", "r", stdin);
-        freopen("output.run", "w", stdout);
-        freopen("error.txt","w",stderr);
-    #endif
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t;
