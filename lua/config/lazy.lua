@@ -18,6 +18,6 @@ require("lazy").setup({
   spec = {
     { import = "plugins" },
   },
-  install = { colorscheme = { "monotone" } },
+  install = { colorscheme = { "dracula" } },
   checker = { enabled = false }, -- disabled automatic checking to avoid intrusive network requests
 })

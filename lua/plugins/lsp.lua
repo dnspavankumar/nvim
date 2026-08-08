@@ -16,13 +16,19 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- Diagnostic configuration
+      -- Diagnostic configuration (errors only, no warnings)
       vim.diagnostic.config({
         virtual_text = {
           prefix = "●",
+          severity = { min = vim.diagnostic.severity.ERROR },
         },
         update_in_insert = false,
-        underline = true,
+        underline = {
+          severity = { min = vim.diagnostic.severity.ERROR },
+        },
+        signs = {
+          severity = { min = vim.diagnostic.severity.ERROR },
+        },
         severity_sort = true,
         float = {
           focusable = false,

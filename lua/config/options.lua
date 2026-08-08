@@ -20,6 +20,9 @@ opt.signcolumn = "yes"
 opt.cursorline = true
 opt.scrolloff = 8
 
+-- Default to Downloads/Practice for competitive programming
+vim.fn.chdir(vim.fn.expand("~/Downloads/Practice"))
+
 -- Clipboard & Mouse
 opt.clipboard = "unnamedplus"
 opt.mouse = "a"
@@ -29,6 +32,9 @@ opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
 
+-- One line of padding between the tab bar and the buffer content
+opt.winbar = " "
+
 -- Update time
 opt.updatetime = 250
 opt.timeoutlen = 300
@@ -36,3 +42,6 @@ opt.timeoutlen = 300
 -- Split windows direction
 opt.splitright = true
 opt.splitbelow = true
+
+
+

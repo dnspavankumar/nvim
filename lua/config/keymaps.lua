@@ -24,11 +24,44 @@ keymap.set("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete Buffer" })
 keymap.set("n", "<leader>e", "<cmd>Neotree toggle left<CR>", { desc = "Toggle file explorer sidebar" })
 keymap.set("n", "<leader>fe", "<cmd>Neotree focus<CR>", { desc = "Focus file explorer sidebar" })
 
--- CompetiTest Keymaps (Competitive programming specific)
-keymap.set("n", "<leader>pr", "<cmd>CompetiTest run<CR>", { desc = "CompetiTest: Run Tests" })
-keymap.set("n", "<leader>pc", "<cmd>CompetiTest compile<CR>", { desc = "CompetiTest: Compile Only" })
-keymap.set("n", "<leader>pa", "<cmd>CompetiTest add_testcase<CR>", { desc = "CompetiTest: Add Testcase" })
-keymap.set("n", "<leader>pe", "<cmd>CompetiTest edit_testcase<CR>", { desc = "CompetiTest: Edit Testcase" })
-keymap.set("n", "<leader>pd", "<cmd>CompetiTest delete_testcase<CR>", { desc = "CompetiTest: Delete Testcase" })
-keymap.set("n", "<leader>pg", "<cmd>CompetiTest receive<CR>", { desc = "CompetiTest: Receive/Parse problem" })
-keymap.set("n", "<leader>pi", "<cmd>CompetiTest show_ui<CR>", { desc = "CompetiTest: Show UI" })
+-- Assistant (A7Lavinraj/assistant.nvim) — open UI, run tests, auto-close on all AC
+keymap.set("n", "<leader>t", function()
+  if vim.bo.filetype ~= "cpp" then
+    vim.notify("Assistant requires a C++ file", vim.log.levels.WARN)
+    return
+  end
+  vim.cmd("cd ~/Downloads/Practice | Assistant")
+  require("assistant.actions").run_testcases()
+
+  local state = require("assistant.state")
+  local wizard = require("assistant.builtins.__wizard").standard
+  local timer = vim.uv.new_timer()
+  if not timer then return end
+
+  timer:start(200, 200, vim.schedule_wrap(function()
+    local tests = state.get_global_key("tests")
+    if not tests or #tests == 0 then return end
+
+    local all_done = true
+    local all_ac = true
+    for _, tc in ipairs(tests) do
+      if not tc.status or tc.status == "RN" then
+        all_done = false
+        all_ac = false
+        break
+      end
+      if tc.status ~= "AC" then
+        all_ac = false
+      end
+    end
+
+    if all_done then
+      timer:stop()
+      if all_ac then
+        vim.defer_fn(function()
+          wizard:hide()
+        end, 1500)
+      end
+    end
+  end))
+end, { desc = "Open assistant and run testcases (C++ only)" })
