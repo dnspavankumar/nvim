@@ -21,7 +21,10 @@ opt.cursorline = true
 opt.scrolloff = 8
 
 -- Default to Downloads/Practice for competitive programming
-vim.fn.chdir(vim.fn.expand("~/Downloads/Practice"))
+local practice_dir = vim.fn.expand("~/Downloads/Practice")
+if vim.fn.isdirectory(practice_dir) == 1 then
+  vim.fn.chdir(practice_dir)
+end
 
 -- Clipboard & Mouse
 opt.clipboard = "unnamedplus"

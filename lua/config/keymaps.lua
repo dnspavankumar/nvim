@@ -3,6 +3,10 @@ local keymap = vim.keymap
 -- Clear search highlighting with <leader>nh
 keymap.set("n", "<leader>nh", ":nohlsearch<CR>", { desc = "Clear search highlight" })
 
+-- Return to normal mode with <Alt+Space> instead of <C-[>
+keymap.set("i", "<M-Space>", "<Esc>", { desc = "Exit insert mode" })
+keymap.set("t", "<M-Space>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
 -- Better window navigation
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window" })
 keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window" })

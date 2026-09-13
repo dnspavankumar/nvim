@@ -98,8 +98,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "TabLine", { bold = false })
     vim.api.nvim_set_hl(0, "TabLineSel", { bold = false })
     vim.api.nvim_set_hl(0, "TabLineFill", { bold = false })
-    vim.api.nvim_set_hl(0, "WinBar", { fg = "#f8f6f2", bg = "#000000", bold = false })
-    vim.api.nvim_set_hl(0, "WinBarNC", { fg = "#f8f6f2", bg = "#000000", bold = false })
+    vim.api.nvim_set_hl(0, "WinBar", { fg = "#f8f6f2", bg = "NONE", bold = false })
+    vim.api.nvim_set_hl(0, "WinBarNC", { fg = "#f8f6f2", bg = "NONE", bold = false })
+    vim.api.nvim_set_hl(0, "Cursor", { fg = "#ffffff", bold = false })
   end,
 })
 

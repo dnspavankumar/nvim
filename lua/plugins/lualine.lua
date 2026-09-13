@@ -41,10 +41,10 @@ return {
         bg        = hsl(0, 0, 12),  -- dark gray, section b/c/x/y background
         fg        = hsl(0, 0, 83),  -- light gray, section b/c/x/y text
         accent_fg = hsl(0, 0, 10),  -- near-black text on the accent sections
-        normal    = hsl(45, 100, 51), -- yellow accent (normal mode)
-        insert    = hsl(42, 100, 50), -- yellow accent (insert/terminal mode)
-        replace   = hsl(44, 100, 45), -- yellow accent (replace mode)
-        visual    = hsl(43, 89, 38),  -- yellow accent (visual mode)
+        normal    = hsl(0, 0, 100), -- white accent (normal mode)
+        insert    = hsl(0, 0, 100), -- white accent (insert/terminal mode)
+        replace   = hsl(0, 0, 100), -- white accent (replace mode)
+        visual    = hsl(0, 0, 100), -- white accent (visual mode)
         warning   = hsl(30, 100, 50), -- orange for warnings
         error     = hsl(0, 100, 40),  -- red for errors
       }
